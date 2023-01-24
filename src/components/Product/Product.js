@@ -1,6 +1,6 @@
 import styles from './Product.module.scss';
 import Button from '../Button/Button';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import ProductImage from './ProductImage/ProductImage';
 import OptionSize from './ProductForm/OptionSize';
 import OptionColor from './ProductForm/OptionColor';
@@ -20,7 +20,12 @@ const Product = ({
     return styles['color' + color[0].toUpperCase() + color.substr(1).toLowerCase()];
   }
 
-  const getPrice = () => basePrice + sizes[currentSizeIndex].additionalPrice;
+  const getPrice = useMemo(() =>
+    basePrice + sizes[currentSizeIndex].additionalPrice
+    , [basePrice, sizes, currentSizeIndex]);
+  // const getPrice = () => (
+  //   basePrice + sizes[currentSizeIndex].additionalPrice
+  // );
 
   const addProductToCart = event => {
     event.preventDefault();
@@ -45,7 +50,7 @@ const Product = ({
       <div>
         <header>
           <h2 className={styles.name}>{title}</h2>
-          <span className={styles.price}>Price: {getPrice()} $</span>
+          <span className={styles.price}>Price: {getPrice} $</span>
         </header>
         <form>
           <OptionSize
